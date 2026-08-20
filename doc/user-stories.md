@@ -1,40 +1,40 @@
 # User Stories – Pickleball Coaching System
 
-## Vai trò: Học viên (PLAYER)
+## Student (PLAYER)
 
-US01. Là học viên, tôi muốn đăng ký / đăng nhập để sử dụng hệ thống.  
-US02. Là học viên, tôi muốn tìm kiếm HLV để chọn người phù hợp.  
-US03. Là học viên, tôi muốn xem hồ sơ HLV để biết kinh nghiệm và đánh giá.  
-US04. Là học viên, tôi muốn đặt lịch học để đăng ký buổi tập.  
-US05. Là học viên, tôi muốn đánh giá HLV sau buổi học để phản hồi chất lượng.  
-US06. Là học viên, tôi muốn xem lịch sử học tập để theo dõi quá trình của mình.
+US01. As a student, I want to register/log in so that I can use the system.  
+US02. As a student, I want to search for coaches so that I can find a suitable trainer.  
+US03. As a student, I want to view a coach profile so that I can check experience and ratings.  
+US04. As a student, I want to book a training session so that I can schedule practice.  
+US05. As a student, I want to rate a coach after a session so that I can give feedback.  
+US06. As a student, I want to view my booking history so that I can track my training.
 
-## Vai trò: Huấn luyện viên (COACH)
+## Coach (COACH)
 
-US07. Là HLV, tôi muốn tạo hồ sơ để học viên có thể tìm thấy tôi.  
-US08. Là HLV, tôi muốn quản lý lịch dạy để sắp xếp thời gian.  
-US09. Là HLV, tôi muốn xem danh sách học viên đăng ký để chuẩn bị buổi dạy.
+US07. As a coach, I want to create/update my profile so that students can find me.  
+US08. As a coach, I want to manage my teaching schedule so that I can organize my time.  
+US09. As a coach, I want to view booked students so that I can prepare for sessions.
 
-## Vai trò: Admin
+## Admin (ADMIN)
 
-US10. Là Admin, tôi muốn duyệt hồ sơ HLV để đảm bảo thông tin đáng tin cậy.  
-US11. Là Admin, tôi muốn quản lý tài khoản người dùng để kiểm soát hệ thống.  
-US12. Là Admin, tôi muốn xem thống kê cơ bản để nắm tình hình hoạt động.
+US10. As an admin, I want to approve coach profiles so that only trusted coaches are listed.  
+US11. As an admin, I want to manage user accounts so that I can control system access.  
+US12. As an admin, I want to view basic statistics so that I can monitor platform activity.
 
-## Acceptance Criteria (các story quan trọng)
+## Acceptance Criteria (key stories)
 
-### US04 – Đặt lịch học
-- Học viên chọn được HLV và khung giờ trống
-- Hệ thống lưu lịch đặt thành công
-- HLV nhìn thấy lịch đăng ký mới
-- Không cho đặt trùng khung giờ đã kín
+### US04 – Book a training session
+- Student can select a coach and an available time slot  
+- System saves the booking successfully  
+- Coach can see the new booking  
+- System prevents booking an already taken slot  
 
-### US07 – Tạo hồ sơ HLV
-- HLV nhập được thông tin cơ bản (tên, kinh nghiệm, khu vực, mô tả)
-- Hồ sơ ở trạng thái chờ duyệt
-- Sau khi Admin duyệt, học viên mới thấy được
+### US07 – Create coach profile
+- Coach can enter basic information (experience, rate, bio, etc.)  
+- Profile starts as pending approval  
+- After admin approval, the profile becomes visible to students  
 
-### US10 – Duyệt HLV
-- Admin xem được danh sách HLV chờ duyệt
-- Admin duyệt hoặc từ chối được
-- Trạng thái cập nhật đúng trên hệ thống
+### US10 – Approve coaches
+- Admin can view pending coach profiles  
+- Admin can approve or reject  
+- Status updates correctly in the system  
