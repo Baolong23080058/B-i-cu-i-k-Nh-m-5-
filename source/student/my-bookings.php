@@ -7,6 +7,46 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "PLAYER") {
 }
 
 $player_id = (int)$_SESSION["user_id"];
+$message = "";
+$error = "";
+
+// Xử lý hủy lịch
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["cancel_booking_id"])) {
+    $booking_id = (int)$_POST["cancel_booking_id"];
+
+    // Lấy booking của đúng học viên + còn CONFIRMED
+    $stmt = mysqli_prepare($conn, "
+        SELECT b.id, b.schedule_id
+        FROM bookings b
+        WHERE b.id = ? AND b.player_id = ? AND b.booking_status = 'CONFIRMED'
+        LIMIT 1
+    ");
+    mysqli_stmt_bind_param($stmt, "ii", $booking_id, $player_id);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    $booking = mysqli_fetch_assoc($res);
+
+    if (!$booking) {
+        $error = "Không tìm thấy lịch hợp lệ để hủy.";
+    } else {
+        mysqli_begin_transaction($conn);
+        try {
+            $stmt1 = mysqli_prepare($conn, "UPDATE bookings SET booking_status = 'CANCELLED' WHERE id = ?");
+            mysqli_stmt_bind_param($stmt1, "i", $booking_id);
+            mysqli_stmt_execute($stmt1);
+
+            $stmt2 = mysqli_prepare($conn, "UPDATE schedules SET status = 'AVAILABLE' WHERE id = ?");
+            mysqli_stmt_bind_param($stmt2, "i", $booking["schedule_id"]);
+            mysqli_stmt_execute($stmt2);
+
+            mysqli_commit($conn);
+            $message = "Đã hủy lịch thành công.";
+        } catch (Exception $e) {
+            mysqli_rollback($conn);
+            $error = "Hủy lịch thất bại.";
+        }
+    }
+}
 
 $sql = "
 SELECT b.id, b.booking_status, b.payment_status, b.created_at,
@@ -40,10 +80,18 @@ $result = mysqli_stmt_get_result($stmt);
     <h3 class="fw-bold mb-0">Lịch học của tôi</h3>
     <div class="d-flex gap-2">
       <a href="book.php" class="btn btn-success btn-sm">Đặt lịch mới</a>
+      <a href="find-coach.php" class="btn btn-outline-primary btn-sm">Tìm HLV</a>
       <a href="index.php" class="btn btn-outline-secondary btn-sm">Trang chủ</a>
       <a href="../logout.php" class="btn btn-outline-danger btn-sm">Đăng xuất</a>
     </div>
   </div>
+
+  <?php if ($message): ?>
+    <div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div>
+  <?php endif; ?>
+  <?php if ($error): ?>
+    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+  <?php endif; ?>
 
   <div class="card shadow-sm">
     <div class="card-body">
@@ -57,6 +105,7 @@ $result = mysqli_stmt_get_result($stmt);
               <th>Học phí</th>
               <th>Trạng thái</th>
               <th>Thanh toán</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -71,10 +120,20 @@ $result = mysqli_stmt_get_result($stmt);
                 <td><?php echo number_format($row["price"], 0, ",", "."); ?> đ</td>
                 <td><span class="badge bg-primary"><?php echo htmlspecialchars($row["booking_status"]); ?></span></td>
                 <td><span class="badge bg-secondary"><?php echo htmlspecialchars($row["payment_status"]); ?></span></td>
+                <td>
+                  <?php if ($row["booking_status"] === "CONFIRMED"): ?>
+                    <form method="POST" class="d-inline" onsubmit="return confirm('Xác nhận hủy lịch này?');">
+                      <input type="hidden" name="cancel_booking_id" value="<?php echo (int)$row["id"]; ?>">
+                      <button type="submit" class="btn btn-outline-danger btn-sm">Hủy</button>
+                    </form>
+                  <?php else: ?>
+                    <span class="text-muted small">—</span>
+                  <?php endif; ?>
+                </td>
               </tr>
             <?php endwhile; ?>
           <?php else: ?>
-            <tr><td colspan="6" class="text-center text-muted">Bạn chưa đặt lịch nào.</td></tr>
+            <tr><td colspan="7" class="text-center text-muted">Bạn chưa đặt lịch nào.</td></tr>
           <?php endif; ?>
           </tbody>
         </table>
