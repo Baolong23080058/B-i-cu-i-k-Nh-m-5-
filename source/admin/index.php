@@ -13,6 +13,7 @@ $full_name = $_SESSION["full_name"] ?? "Admin";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/style.css">
   <style>
     body { background:#f1f5f9; font-family: system-ui, sans-serif; }
     .card-stat { border-radius:16px; border:none; }
