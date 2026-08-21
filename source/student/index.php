@@ -18,11 +18,12 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "PLAYER") {
   <div class="card shadow-sm p-4">
     <h3 class="fw-bold">Xin chào Học viên: <?php echo htmlspecialchars($_SESSION["full_name"]); ?></h3>
     <p class="text-muted">Chọn chức năng bên dưới</p>
-    <div class="d-flex flex-wrap gap-2 mt-3">
-      <a href="book.php" class="btn btn-success">Đặt lịch học</a>
-      <a href="my-bookings.php" class="btn btn-primary">Lịch của tôi</a>
-      <a href="../logout.php" class="btn btn-outline-danger">Đăng xuất</a>
-    </div>
+<div class="d-flex flex-wrap gap-2 mt-3">
+  <a href="find-coach.php" class="btn btn-outline-primary">Tìm HLV</a>
+  <a href="book.php" class="btn btn-success">Đặt lịch học</a>
+  <a href="my-bookings.php" class="btn btn-primary">Lịch của tôi</a>
+  <a href="../logout.php" class="btn btn-outline-danger">Đăng xuất</a>
+</div>
   </div>
 </div>
 </body>
